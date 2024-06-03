@@ -1,4 +1,4 @@
-package cn.lzj66.mybatisPlus;
+package cn.lzj66.auth.mapper;
 
 import cn.lzj66.entity.system.SysRole;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;

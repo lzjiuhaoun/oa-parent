@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.lzj66.mybatisPlus.SysRoleMapper">
+<mapper namespace="cn.lzj66.auth.mapper.SysRoleMapper">
 
     <!-- 方法对应的SQL查询 -->
     <select id="selectByRoleId" resultType="cn.lzj66.entity.system.SysRole">

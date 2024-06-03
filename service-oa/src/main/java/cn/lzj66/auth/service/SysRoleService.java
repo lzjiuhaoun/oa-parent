@@ -1,6 +1,9 @@
 package cn.lzj66.auth.service;
 
 import cn.lzj66.entity.system.SysRole;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.List;
 
@@ -14,4 +17,7 @@ import java.util.List;
  */
 public interface SysRoleService {
     List<SysRole> list();
+
+    //条件分页查询
+    IPage<SysRole> page(Page<SysRole> pageParam, LambdaQueryWrapper<SysRole> wrapper);
 }
