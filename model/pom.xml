@@ -11,11 +11,6 @@
 
     <artifactId>model</artifactId>
 
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-    </properties>
-
     <dependencies>
         <!--lombok用来简化实体类-->
         <dependency>
