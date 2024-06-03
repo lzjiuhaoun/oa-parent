@@ -1,6 +1,7 @@
 package cn.lzj66.auth.controller;
 
 import cn.lzj66.auth.service.SysRoleService;
+import cn.lzj66.common.execption.Lzj66ExceptionHandler;
 import cn.lzj66.entity.system.SysRole;
 import cn.lzj66.result.Result;
 import cn.lzj66.vo.system.SysRoleQueryVo;
@@ -73,6 +74,13 @@ public class SysRoleController {
     @ApiOperation(value = "获取")
     @GetMapping("get/{id}")
     public Result get(@PathVariable Long id) {
+//        try {
+//            int n = 0;
+//            int a = 10 / n;
+//        }catch (Exception e){
+//            throw new Lzj66ExceptionHandler(20001,"出现自定义异常");
+//        }
+
         SysRole role = sysRoleService.getById(id);
         return Result.ok(role);
     }
