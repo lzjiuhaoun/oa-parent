@@ -20,4 +20,14 @@ public interface SysRoleService {
 
     //条件分页查询
     IPage<SysRole> page(Page<SysRole> pageParam, LambdaQueryWrapper<SysRole> wrapper);
+
+    SysRole getById(Long id);
+
+    void save(SysRole role);
+
+    void updateById(SysRole role);
+
+    void removeById(Long id);
+
+    void removeByIds(List<Long> idList);
 }

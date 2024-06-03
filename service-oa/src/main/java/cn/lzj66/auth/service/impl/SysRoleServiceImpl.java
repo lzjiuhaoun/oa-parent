@@ -24,6 +24,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 
     @Autowired
     private SysRoleMapper sysRoleMapper;
+
     @Override
     public List<SysRole> list() {
         return sysRoleMapper.selectList(null);
@@ -32,6 +33,31 @@ public class SysRoleServiceImpl implements SysRoleService {
     //条件分页查询
     @Override
     public IPage<SysRole> page(Page<SysRole> pageParam, LambdaQueryWrapper<SysRole> wrapper) {
-        return sysRoleMapper.selectPage(pageParam,wrapper);
+        return sysRoleMapper.selectPage(pageParam, wrapper);
+    }
+
+    @Override
+    public SysRole getById(Long id) {
+        return sysRoleMapper.selectById(id);
+    }
+
+    @Override
+    public void save(SysRole role) {
+        sysRoleMapper.insert(role);
+    }
+
+    @Override
+    public void updateById(SysRole role) {
+        sysRoleMapper.updateById(role);
+    }
+
+    @Override
+    public void removeById(Long id) {
+        sysRoleMapper.deleteById(id);
+    }
+
+    @Override
+    public void removeByIds(List<Long> idList) {
+        sysRoleMapper.deleteBatchIds(idList);
     }
 }
