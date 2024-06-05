@@ -6,6 +6,7 @@ import cn.lzj66.result.Result;
 import cn.lzj66.vo.system.SysUserQueryVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @Author 工学院-liuzhaojun
  * @Create 2024/6/4 10:41
  */
+@Api("用户管理")
 @RestController
 @RequestMapping("/admin/system/sysUser")
 public class SysUserController {

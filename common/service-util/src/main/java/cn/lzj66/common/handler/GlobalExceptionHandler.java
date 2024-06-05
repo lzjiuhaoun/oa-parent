@@ -31,7 +31,8 @@ public class GlobalExceptionHandler {
         return Result.fail().message("执行了特定异常处理");
     }
     //处理自定义异常
-    //或者在可能出现异常的地方，try-catch捕获自定义异常即可
+    //有错误时，抛出异常：throw new Lzj66ExceptionHandler(code,message); 或者捕获异常：try-catch
+    //此时该异常会被拦截，并将自定义的错误信息封装为Result后返回
     @ExceptionHandler(Lzj66ExceptionHandler.class)
     @ResponseBody
     public Result error(Lzj66ExceptionHandler e){

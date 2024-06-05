@@ -14,4 +14,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
  */
 public interface SysUserService {
     IPage<SysUser> index(Long page, Long limit, SysUserQueryVo sysUserQueryVo);
+
+    //根据用户名查询用户信息
+    SysUser selectUserByUsername(String username);
+
+    SysUser getUserById(Long userId);
 }
