@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.lzj66.auth.mapper.SysUserRoleMapper">
+
+
+    <select id="findRoleIdByUserId" resultType="cn.lzj66.entity.system.SysRole">
+        SELECT *
+        FROM `sys_user_role`
+                 inner JOIN sys_role ON sys_user_role.role_id = sys_role.id
+        WHERE sys_user_role.is_deleted = 0
+          AND sys_user_role.user_id = #{userId}
+        ORDER BY sys_role.id;
+
+
+    </select>
+
+    <insert id="doAssign">
+        INSERT INTO sys_user_role(role_id, user_id, create_time, update_time, is_deleted)
+        VALUES
+        <foreach item="roleId" index="index" collection="roleIdList" separator=",">
+            (#{roleId}, #{userId}, NOW(), NOW(), 0)
+        </foreach>
+    </insert>
+</mapper>

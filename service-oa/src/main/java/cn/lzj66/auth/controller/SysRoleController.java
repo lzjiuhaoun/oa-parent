@@ -3,6 +3,7 @@ package cn.lzj66.auth.controller;
 import cn.lzj66.auth.service.SysRoleService;
 import cn.lzj66.entity.system.SysRole;
 import cn.lzj66.result.Result;
+import cn.lzj66.vo.system.AssginRoleVo;
 import cn.lzj66.vo.system.SysRoleQueryVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.Api;
@@ -13,12 +14,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * ClassName: SysRoleController
@@ -50,7 +51,7 @@ public class SysRoleController {
     public Result pageQueryRole(@PathVariable Long page,
                                 @PathVariable Long limit,
                                 SysRoleQueryVo sysRoleQueryVo) {
-        IPage<SysRole> pageModel =  sysRoleService.pageQueryRole(page,limit,sysRoleQueryVo);
+        IPage<SysRole> pageModel = sysRoleService.pageQueryRole(page, limit, sysRoleQueryVo);
         return Result.ok(pageModel);
     }
 
@@ -69,7 +70,7 @@ public class SysRoleController {
     }
 
     @ApiOperation(value = "修改角色")
-    @PutMapping("update")
+    @PostMapping("update")
     public Result updateById(@RequestBody SysRole role) {
         sysRoleService.updateById(role);
         return Result.ok();
@@ -88,4 +89,25 @@ public class SysRoleController {
         sysRoleService.removeByIds(idList);
         return Result.ok();
     }
+
+    /**
+     * 返回给前端：用户已分配的角色数据list1和全部角色数据list2
+     * 前端将展示所有角色数据，其中已分配的角色前有勾选，未分配的角色前无勾选
+     * @param userId
+     * @return
+     */
+    @ApiOperation("根据用户获取角色数据")
+    @GetMapping("/toAssign/{userId}")
+    public Result toAssign(@PathVariable Long userId) {
+        Map<String, Object> roleMap = sysRoleService.findRoleDataByUserId(userId);
+        return Result.ok(roleMap);
+    }
+
+    @ApiOperation(value = "给用户分配角色")
+    @PostMapping("/doAssign")
+    public Result doAssign(@RequestBody AssginRoleVo assginRoleVo) {
+        sysRoleService.doAssign(assginRoleVo);
+        return Result.ok();
+    }
+
 }

@@ -25,4 +25,6 @@ public interface SysUserService {
     void save(SysUser sysUser);
 
     void removeById(Long id);
+
+    void updateStatus(Long id, Integer status);
 }

@@ -88,4 +88,20 @@ public class SysUserServiceImpl implements SysUserService {
     public void removeById(Long id) {
         sysUserMapper.deleteById(id);
     }
+
+    /**
+     * 更新用户状态
+     * @param id
+     * @param status
+     */
+    @Override
+    public void updateStatus(Long id, Integer status) {
+        SysUser sysUser = sysUserMapper.selectById(id);
+        if (status.intValue()==1) {
+            sysUser.setStatus(status);
+        }else {
+            sysUser.setStatus(0);
+        }
+        sysUserMapper.updateById(sysUser);
+    }
 }

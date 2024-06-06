@@ -30,7 +30,7 @@ public class BaseEntity implements Serializable {
     private Date updateTime;
 
     @ApiModelProperty(value = "逻辑删除(1:已删除，0:未删除)")
-    @TableLogic //逻辑删除，MP拼接SQL时默认会自动加上 where is_deleted=0 的条件
+    @TableLogic//逻辑删除，MP拼接SQL时默认会自动加上 where is_deleted=0 的条件
     @TableField("is_deleted")
     private Integer isDeleted;
 
