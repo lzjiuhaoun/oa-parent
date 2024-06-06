@@ -2,6 +2,7 @@ package cn.lzj66.auth.service.impl;
 
 import cn.lzj66.auth.mapper.SysUserMapper;
 import cn.lzj66.auth.service.SysUserService;
+import cn.lzj66.common.execption.Lzj66ExceptionHandler;
 import cn.lzj66.entity.system.SysUser;
 import cn.lzj66.vo.system.SysUserQueryVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -68,5 +69,23 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public SysUser getUserById(Long userId) {
         return sysUserMapper.selectById(userId);
+    }
+
+    @Override
+    public void updateById(SysUser sysUser) {
+        int i = sysUserMapper.updateById(sysUser);
+        if (i == 0) {
+            throw new Lzj66ExceptionHandler(201,"用户id有误");
+        }
+    }
+
+    @Override
+    public void save(SysUser sysUser) {
+        sysUserMapper.insert(sysUser);
+    }
+
+    @Override
+    public void removeById(Long id) {
+        sysUserMapper.deleteById(id);
     }
 }

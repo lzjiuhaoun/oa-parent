@@ -19,4 +19,10 @@ public interface SysUserService {
     SysUser selectUserByUsername(String username);
 
     SysUser getUserById(Long userId);
+
+    void updateById(SysUser sysUser);
+
+    void save(SysUser sysUser);
+
+    void removeById(Long id);
 }
