@@ -2,6 +2,7 @@
 //
 package cn.lzj66.vo.system;
 
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 /**
@@ -18,6 +19,7 @@ public class SysRoleQueryVo implements Serializable {
 	
 	private String roleName;
 
+	@Size(max = 50, message = "角色名称长度不能超过50")
 	public String getRoleName() {
 		return roleName;
 	}

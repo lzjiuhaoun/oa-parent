@@ -1,17 +1,13 @@
 package cn.lzj66.auth.controller;
 
 import cn.lzj66.auth.service.SysRoleService;
-import cn.lzj66.common.execption.Lzj66ExceptionHandler;
 import cn.lzj66.entity.system.SysRole;
 import cn.lzj66.result.Result;
 import cn.lzj66.vo.system.SysRoleQueryVo;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +23,7 @@ import java.util.List;
 /**
  * ClassName: SysRoleController
  * Package: cn.lzj66.auth.controller
- * Description:
+ * Description:角色管理
  *
  * @Author 工学院-liuzhaojun
  * @Create 2024/6/3 15:30
@@ -54,33 +50,13 @@ public class SysRoleController {
     public Result pageQueryRole(@PathVariable Long page,
                                 @PathVariable Long limit,
                                 SysRoleQueryVo sysRoleQueryVo) {
-        //调用service的方法实现
-        //1 创建Page对象，传递分页相关参数
-        //page 当前页  limit 每页显示记录数
-        Page<SysRole> pageParam = new Page<>(page, limit);
-
-        //2 封装条件，判断条件是否为空，不为空进行封装
-        LambdaQueryWrapper<SysRole> wrapper = new LambdaQueryWrapper<>();
-        String roleName = sysRoleQueryVo.getRoleName();
-        if (!StringUtils.isEmpty(roleName)) {
-            //封装 like模糊查询
-            wrapper.like(SysRole::getRoleName, roleName);
-        }
-        //3 调用方法实现
-        IPage<SysRole> pageModel = sysRoleService.page(pageParam, wrapper);
+        IPage<SysRole> pageModel =  sysRoleService.pageQueryRole(page,limit,sysRoleQueryVo);
         return Result.ok(pageModel);
     }
 
     @ApiOperation(value = "获取")
     @GetMapping("get/{id}")
     public Result get(@PathVariable Long id) {
-//        try {
-//            int n = 0;
-//            int a = 10 / n;
-//        }catch (Exception e){
-//            throw new Lzj66ExceptionHandler(20001,"出现自定义异常");
-//        }
-
         SysRole role = sysRoleService.getById(id);
         return Result.ok(role);
     }
@@ -106,7 +82,7 @@ public class SysRoleController {
         return Result.ok();
     }
 
-    @ApiOperation(value = "根据id列表删除")
+    @ApiOperation(value = "根据id列表删除角色")
     @DeleteMapping("batchRemove")
     public Result batchRemove(@RequestBody List<Long> idList) {
         sysRoleService.removeByIds(idList);

@@ -1,11 +1,14 @@
 package cn.lzj66.auth.service.impl;
 
 import cn.lzj66.auth.service.SysRoleService;
+import cn.lzj66.common.execption.Lzj66ExceptionHandler;
 import cn.lzj66.entity.system.SysRole;
 import cn.lzj66.auth.mapper.SysRoleMapper;
+import cn.lzj66.vo.system.SysRoleQueryVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,5 +62,18 @@ public class SysRoleServiceImpl implements SysRoleService {
     @Override
     public void removeByIds(List<Long> idList) {
         sysRoleMapper.deleteBatchIds(idList);
+    }
+
+    @Override
+    public IPage<SysRole> pageQueryRole(Long page, Long limit, SysRoleQueryVo sysRoleQueryVo) {
+        if (page==null && limit==null) {
+            throw new Lzj66ExceptionHandler(201,"页码数和页大小不能为空");
+        }
+        IPage<SysRole> rolePage = new Page<>(page, limit);
+        LambdaQueryWrapper<SysRole> queryWrapper = new LambdaQueryWrapper<>();
+        if (!StringUtils.isEmpty(sysRoleQueryVo.getRoleName())) {
+            queryWrapper.like(SysRole::getRoleName, sysRoleQueryVo.getRoleName());
+        }
+        return sysRoleMapper.selectPage(rolePage, queryWrapper);
     }
 }

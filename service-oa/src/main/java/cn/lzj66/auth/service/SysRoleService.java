@@ -1,6 +1,7 @@
 package cn.lzj66.auth.service;
 
 import cn.lzj66.entity.system.SysRole;
+import cn.lzj66.vo.system.SysRoleQueryVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -30,4 +31,6 @@ public interface SysRoleService {
     void removeById(Long id);
 
     void removeByIds(List<Long> idList);
+
+    IPage<SysRole> pageQueryRole(Long page, Long limit, SysRoleQueryVo sysRoleQueryVo);
 }
