@@ -3,6 +3,7 @@ package cn.lzj66.auth.controller;
 import cn.lzj66.auth.service.SysMenuService;
 import cn.lzj66.entity.system.SysMenu;
 import cn.lzj66.result.Result;
+import cn.lzj66.vo.system.AssginMenuVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,4 +66,16 @@ public class SysMenuController {
         sysMenuService.removeMenuById(id);
         return Result.ok();
     }
+    @ApiOperation("给角色分配权限")
+    @PostMapping("doAssign")
+    public Result doAssion(@RequestBody AssginMenuVo assginMenuVo){
+        sysMenuService.doAssion(assginMenuVo);
+        return Result.ok();
+    }
+    @ApiOperation("根据角色获取菜单")
+    @GetMapping("/toAssign/{roleId}")
+    public Result toAssign(@PathVariable Long roleId){
+        return  Result.ok(sysMenuService.findSysMenuByRoleId(roleId));
+    }
+
 }

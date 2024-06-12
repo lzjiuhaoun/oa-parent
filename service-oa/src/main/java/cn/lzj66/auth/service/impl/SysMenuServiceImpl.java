@@ -1,19 +1,24 @@
 package cn.lzj66.auth.service.impl;
 
 import cn.lzj66.auth.mapper.SysMenuMapper;
+import cn.lzj66.auth.mapper.SysRoleMenuMapper;
 import cn.lzj66.auth.service.SysMenuService;
 import cn.lzj66.auth.utils.MenuHelper;
 import cn.lzj66.common.execption.Lzj66ExceptionHandler;
 import cn.lzj66.entity.system.SysMenu;
+import cn.lzj66.entity.system.SysRoleMenu;
+import cn.lzj66.vo.system.AssginMenuVo;
 import cn.lzj66.vo.system.MetaVo;
 import cn.lzj66.vo.system.RouterVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +34,8 @@ import java.util.stream.Collectors;
 public class SysMenuServiceImpl implements SysMenuService {
     @Autowired
     private SysMenuMapper sysMenuMapper;
+    @Autowired
+    private SysRoleMenuMapper sysRoleMenuMapper;
 
     //根据用户id获取用户可操作的菜单列表
     @Override
@@ -180,5 +187,50 @@ public class SysMenuServiceImpl implements SysMenuService {
         }
         //该菜单是孩子菜单
         sysMenuMapper.deleteById(id);
+    }
+
+    /**
+     * 给角色分配权限
+     *
+     * @param assginMenuVo
+     */
+    @Override
+    @Transactional
+    public void doAssion(AssginMenuVo assginMenuVo) {
+        //删除角色原来的权限在给角色分配权限
+        sysRoleMenuMapper.delete(new LambdaQueryWrapper<SysRoleMenu>().eq(SysRoleMenu::getRoleId, assginMenuVo.getRoleId()));
+        for (Long menuId : assginMenuVo.getMenuIdList()) {
+            if (StringUtils.isEmpty(menuId)) {
+                continue;
+            }
+            SysRoleMenu sysRoleMenu = new SysRoleMenu(assginMenuVo.getRoleId(), menuId);
+            sysRoleMenu.setCreateTime(new Date());
+            sysRoleMenu.setUpdateTime(new Date());
+            sysRoleMenuMapper.insert(sysRoleMenu);
+        }
+
+    }
+
+    /**
+     * 根据角色获取菜单
+     *
+     * @param roleId
+     * @return
+     */
+    @Override
+    public List<SysMenu> findSysMenuByRoleId(Long roleId) {
+        //角色拥有的权限id
+        List<Long> sysMenuIds = sysRoleMenuMapper.findSysMenuByRoleId(roleId);
+        //所有的权限
+        List<SysMenu> allSysMenu = sysMenuMapper.selectList(new LambdaQueryWrapper<SysMenu>().eq(SysMenu::getStatus, 1));
+        allSysMenu.forEach(e -> {
+            if (sysMenuIds.contains(e.getId())) {
+                e.setSelect(true);
+            } else {
+                e.setSelect(false);
+            }
+        });
+        //将结果构建为树结构后，返回
+        return MenuHelper.buildTree(allSysMenu);
     }
 }

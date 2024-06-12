@@ -1,6 +1,7 @@
 package cn.lzj66.auth.service;
 
 import cn.lzj66.entity.system.SysMenu;
+import cn.lzj66.vo.system.AssginMenuVo;
 import cn.lzj66.vo.system.RouterVo;
 
 import java.util.List;
@@ -29,4 +30,8 @@ public interface SysMenuService {
     void updateById(SysMenu sysMenu);
 
     void removeMenuById(Long id);
+
+    void doAssion(AssginMenuVo assginMenuVo);
+
+    List<SysMenu> findSysMenuByRoleId(Long roleId);
 }
