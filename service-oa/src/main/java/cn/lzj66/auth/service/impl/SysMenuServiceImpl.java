@@ -1,9 +1,10 @@
 package cn.lzj66.auth.service.impl;
 
-import cn.lzj66.auth.utils.MenuHelper;
-import cn.lzj66.entity.system.SysMenu;
 import cn.lzj66.auth.mapper.SysMenuMapper;
 import cn.lzj66.auth.service.SysMenuService;
+import cn.lzj66.auth.utils.MenuHelper;
+import cn.lzj66.common.execption.Lzj66ExceptionHandler;
+import cn.lzj66.entity.system.SysMenu;
 import cn.lzj66.vo.system.MetaVo;
 import cn.lzj66.vo.system.RouterVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -12,7 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -39,7 +41,7 @@ public class SysMenuServiceImpl implements SysMenuService {
             //不是管理员，则根据userId查询可操作的菜单列表
             sysMenuList = sysMenuMapper.findMenuListByUserId(userId);
         }
-        //将菜单列表转换为前端框架需要的路由列表
+        //将菜单列表转换为前端框架需要的路由列表(即树结构)
         List<SysMenu> sysMenus = MenuHelper.buildTree(sysMenuList);
         List<RouterVo> routerList = this.buildRouter(sysMenus);
         return routerList;
@@ -121,5 +123,62 @@ public class SysMenuServiceImpl implements SysMenuService {
         //筛选出sysMenus集合中item.getType() == 2 元素，并将item.getPerms()列单独取出作为List集合返回.
         List<String> permsList = sysMenus.stream().filter(item -> item.getType() == 2).map(item -> item.getPerms()).collect(Collectors.toList());
         return permsList;
+    }
+
+    /**
+     * 获取菜单
+     *
+     * @return
+     */
+    @Override
+    public List<SysMenu> findNodes() {
+        List<SysMenu> sysMenus = sysMenuMapper.selectList(null);
+        if (CollectionUtils.isEmpty(sysMenus)) {
+            return null;
+        }
+        //将菜单列表构建为树结构返回
+        List<SysMenu> sysMenuTreeList = MenuHelper.buildTree(sysMenus);
+        return sysMenuTreeList;
+    }
+
+    /**
+     * 新增菜单
+     *
+     * @param sysMenu
+     */
+    @Override
+    public void save(SysMenu sysMenu) {
+        if (sysMenu == null) {
+            return;
+        }
+        sysMenuMapper.insert(sysMenu);
+    }
+
+    /**
+     * 修改菜单
+     *
+     * @param sysMenu
+     */
+    @Override
+    public void updateById(SysMenu sysMenu) {
+        if (sysMenu == null) {
+            return;
+        }
+        sysMenuMapper.updateById(sysMenu);
+    }
+
+    /**
+     * 删除菜单
+     * 只有叶子结点才能删除
+     */
+    @Override
+    public void removeMenuById(Long id) {
+        //检查该id是否为孩子结点：若该菜单id不是任何结点的parentId，说明该结点是孩子结点，可以删除，否者不能删除
+        List<SysMenu> sysMenus = sysMenuMapper.selectList(new LambdaQueryWrapper<SysMenu>().eq(SysMenu::getParentId, id));
+        if (!CollectionUtils.isEmpty(sysMenus)) {
+            throw new Lzj66ExceptionHandler(201, "无法删除，请先删除子结点");
+        }
+        //该菜单是孩子菜单
+        sysMenuMapper.deleteById(id);
     }
 }

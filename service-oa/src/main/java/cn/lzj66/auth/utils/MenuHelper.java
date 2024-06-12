@@ -14,7 +14,7 @@ import java.util.List;
  * @Create 2024/6/5 11:26
  */
 public class MenuHelper {
-    //使用递归方法建菜单
+    //使用递归方法构建书树结构菜单
     public static List<SysMenu> buildTree(List<SysMenu> sysMenuList) {
         //创建list集合，用于最终数据
         List<SysMenu> trees = new ArrayList<>();
@@ -29,6 +29,12 @@ public class MenuHelper {
         return trees;
     }
 
+    /**
+     * 递归查找菜单的孩子结点
+     * @param sysMenu
+     * @param sysMenuList
+     * @return
+     */
     public static SysMenu getChildren(SysMenu sysMenu,
                                       List<SysMenu> sysMenuList) {
         sysMenu.setChildren(new ArrayList<SysMenu>());

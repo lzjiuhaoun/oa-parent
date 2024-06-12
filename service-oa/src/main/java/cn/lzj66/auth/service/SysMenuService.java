@@ -1,5 +1,6 @@
 package cn.lzj66.auth.service;
 
+import cn.lzj66.entity.system.SysMenu;
 import cn.lzj66.vo.system.RouterVo;
 
 import java.util.List;
@@ -19,4 +20,13 @@ public interface SysMenuService {
 
     //根据用户id获取用户可操作的按钮列表
     List<String> findUserPermsByUserId(Long userId);
+
+    //获取菜单
+    List<SysMenu> findNodes();
+    //新增菜单
+    void save(SysMenu sysMenu);
+
+    void updateById(SysMenu sysMenu);
+
+    void removeMenuById(Long id);
 }
