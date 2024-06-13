@@ -16,7 +16,9 @@ import java.util.Date;
 
 public class JwtHelper {
 
+    //jwt的过期时间，这个过期时间必须要大于签发时间
     private static long tokenExpiration = 365 * 24 * 60 * 60 * 1000;
+    //jwt签名密钥,在生成和验证JWT时，这个密钥用于加密和解密签名部分，确保JWT的安全性和完整性。
     private static String tokenSignKey = "123456";
 
     //根据用户id和用户名称生成token字符串
