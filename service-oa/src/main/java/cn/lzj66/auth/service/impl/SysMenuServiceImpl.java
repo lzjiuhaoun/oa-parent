@@ -54,7 +54,7 @@ public class SysMenuServiceImpl implements SysMenuService {
         return routerList;
     }
 
-    //构建成框架要求的路由结构
+    //将树结构构建为路由结构
     private List<RouterVo> buildRouter(List<SysMenu> menus) {
         //创建list集合，存储最终数据
         List<RouterVo> routers = new ArrayList<>();

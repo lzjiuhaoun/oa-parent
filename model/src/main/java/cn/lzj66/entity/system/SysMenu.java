@@ -36,7 +36,7 @@ public class SysMenu extends BaseEntity {
 	@TableField("component")
 	private String component;
 
-	@ApiModelProperty(value = "权限标识")
+	@ApiModelProperty(value = "权限标识(按钮功能说明)")
 	@TableField("perms")
 	private String perms;
 

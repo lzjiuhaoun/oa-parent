@@ -44,14 +44,14 @@ public class IndexController {
     @PostMapping("/login")
     public Result login(@RequestBody LoginVo loginVo) {
         if (StringUtils.isEmpty(loginVo.getUsername())) {
-            throw new Lzj66ExceptionHandler(201, "用户不存在");
+            throw new Lzj66ExceptionHandler(201, "用户名不存在");
         }
         SysUser sysUserByName = sysUserService.selectUserByUsername(loginVo.getUsername());
         if (sysUserByName == null) {
             throw new Lzj66ExceptionHandler(201, "用户不存在");
         }
         if (!sysUserByName.getPassword().equals(MD5.encrypt(loginVo.getPassword()))) {
-            throw new Lzj66ExceptionHandler(201, "密码错误");
+            throw new Lzj66ExceptionHandler(201, "用户名或密码错误");
         }
         //判断用户是否禁用  1:可用 0：禁用
         if (sysUserByName.getStatus().intValue() == 0) {
