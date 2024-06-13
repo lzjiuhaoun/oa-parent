@@ -8,7 +8,9 @@ import cn.lzj66.vo.system.SysRoleQueryVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,15 +48,20 @@ public class SysRoleController {
     //条件分页查询
     //page 当前页  limit 每页显示记录数
     //SysRoleQueryVo 条件对象
+    @PreAuthorize("hasAuthority('bnt.sysRole.list')")  //@PreAuthorize标签控制controller层接口权限
     @ApiOperation("条件分页查询")
     @GetMapping("{page}/{limit}")
-    public Result pageQueryRole(@PathVariable Long page,
+    public Result pageQueryRole(@ApiParam(name = "page", value = "当前页码", required = true)
+                                @PathVariable Long page,
+                                @ApiParam(name = "limit", value = "每页记录数", required = true)
                                 @PathVariable Long limit,
-                                SysRoleQueryVo sysRoleQueryVo) {
-        IPage<SysRole> pageModel = sysRoleService.pageQueryRole(page, limit, sysRoleQueryVo);
+                                @ApiParam(name = "roleQueryVo", value = "查询对象", required = false)
+                                SysRoleQueryVo roleQueryVo) {
+        IPage<SysRole> pageModel = sysRoleService.pageQueryRole(page, limit, roleQueryVo);
         return Result.ok(pageModel);
     }
 
+    @PreAuthorize("hasAuthority('bnt.sysRole.list')")
     @ApiOperation(value = "获取")
     @GetMapping("get/{id}")
     public Result get(@PathVariable Long id) {
@@ -62,6 +69,7 @@ public class SysRoleController {
         return Result.ok(role);
     }
 
+    @PreAuthorize("hasAuthority('bnt.sysRole.add')")
     @ApiOperation(value = "新增角色")
     @PostMapping("save")
     public Result save(@RequestBody @Validated SysRole role) {
@@ -69,6 +77,7 @@ public class SysRoleController {
         return Result.ok();
     }
 
+    @PreAuthorize("hasAuthority('bnt.sysRole.update')")
     @ApiOperation(value = "修改角色")
     @PostMapping("update")
     public Result updateById(@RequestBody SysRole role) {
@@ -76,6 +85,7 @@ public class SysRoleController {
         return Result.ok();
     }
 
+    @PreAuthorize("hasAuthority('bnt.sysRole.remove')")  //@PreAuthorize标签控制controller层接口权限
     @ApiOperation(value = "删除角色")
     @DeleteMapping("remove/{id}")
     public Result remove(@PathVariable Long id) {
@@ -83,6 +93,7 @@ public class SysRoleController {
         return Result.ok();
     }
 
+    @PreAuthorize("hasAuthority('bnt.sysRole.remove')")
     @ApiOperation(value = "根据id列表删除角色")
     @DeleteMapping("batchRemove")
     public Result batchRemove(@RequestBody List<Long> idList) {
@@ -93,6 +104,7 @@ public class SysRoleController {
     /**
      * 返回给前端：用户已分配的角色数据list1和全部角色数据list2
      * 前端将展示所有角色数据，其中已分配的角色前有勾选，未分配的角色前无勾选
+     *
      * @param userId
      * @return
      */

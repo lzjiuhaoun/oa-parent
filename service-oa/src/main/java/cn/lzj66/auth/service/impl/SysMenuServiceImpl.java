@@ -114,7 +114,7 @@ public class SysMenuServiceImpl implements SysMenuService {
     }
 
     /**
-     * 根据用户id获取用户可操作的按钮列表
+     * 根据用户id查询用户权限标识
      *
      * @param userId
      * @return
