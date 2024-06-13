@@ -78,7 +78,7 @@ public class IndexController {
         UserInfoDto userInfoDto = new UserInfoDto();
         userInfoDto.setRoles("[admin]");
         userInfoDto.setName(sysUser.getUsername());
-        userInfoDto.setAvatar("https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
+        userInfoDto.setAvatar(sysUser.getHeadUrl());
         userInfoDto.setRouters(routerList);
         userInfoDto.setButtons(permsList);
         return Result.ok(userInfoDto);
